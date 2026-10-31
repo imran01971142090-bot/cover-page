@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CoverCraft – Assignment Cover Page Generator</title>
+  <meta name="description" content="A modern, clean, and responsive academic cover page generator. Enter your details, upload your university logo, customize templates, and download a print-ready A4 PDF." />
+  <meta property="og:title" content="CoverCraft – Assignment Cover Page Generator" />
+  <meta property="og:description" content="A modern, clean, and responsive academic cover page generator. Enter your details, upload your university logo, customize templates, and download a print-ready A4 PDF." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- html2pdf.js bundle (bundles jsPDF and html2canvas) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWQV46GjGgyZfsSpNPBPVUULMZOydw3xg4CdDzRS69NnG48fcPZOUB978mm8+Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <!-- Application Stylesheet -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ======================================================================
+       Header & Top Navigation
+       ====================================================================== -->
+  <header class="app-header">
+    <div class="header-container">
+      <!-- Zone 1: Brand Wordmark -->
+      <a href="#" class="brand-zone" title="CoverCraft Home">
+        <div class="brand-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+        </div>
+        <div class="brand-info">
+          <span class="brand-name">CoverCraft</span>
+          <span class="brand-subtitle">Assignment Cover Page Generator · Create. Customize. Download.</span>
+        </div>
+      </a>
+
+      <!-- Zone 2: Navigation Links & Tagline -->
+      <nav class="header-nav">
+        <a href="#institutionSection" class="nav-link">Institution &amp; Logo</a>
+        <a href="#assignmentSection" class="nav-link">Assignment</a>
+        <a href="#studentSection" class="nav-link">Student</a>
+        <a href="#teacherSection" class="nav-link">Teacher</a>
+        <a href="#styleSection" class="nav-link">Templates</a>
+      </nav>
+
+      <!-- Zone 3: Primary Actions -->
+      <div class="header-actions">
+        <div class="status-badge" id="autoSaveStatus" title="Changes are automatically preserved in your browser">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>Saved to browser</span>
+        </div>
+
+        <button type="button" class="btn btn-primary" id="btnDownloadPdfHeader">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>Download PDF</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================================================================
+       Main Split-View Application Area
+       ====================================================================== -->
+  <main class="app-main">
+    
+    <!-- LEFT COLUMN: Student Information Form -->
+    <div class="form-column">
+      
+      <!-- Toolbar Strip -->
+      <div class="toolbar-card">
+        <div class="toolbar-group">
+          <button type="button" class="btn btn-secondary btn-sm" id="btnLoadSample" title="Pre-fill form with authentic university data">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+            </svg>
+            <span>Load Sample Data</span>
+          </button>
+
+          <button type="button" class="btn btn-secondary btn-sm" id="btnCopyText" title="Copy structured text for documentation">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+              <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+            </svg>
+            <span>Copy Text</span>
+          </button>
+        </div>
+
+        <div class="toolbar-group">
+          <button type="button" class="btn btn-ghost btn-sm" id="btnClearStorage" title="Clear cached data from localStorage">
+            <span>Clear Saved Data</span>
+          </button>
+
+          <button type="button" class="btn btn-danger btn-sm" id="btnResetForm" title="Clear all fields">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+              <path d="M21 3v5h-5"/>
+              <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+              <path d="M8 16H3v5"/>
+            </svg>
+            <span>Reset</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- FORM FORM -->
+      <form id="coverCraftForm" onsubmit="return false;">
+
+        <!-- Section 1: Institution & Logo -->
+        <section class="form-card" id="institutionSection">
+          <div class="card-header">
+            <div class="card-title-group">
+              <div class="card-icon">1</div>
+              <h2 class="card-title">Institution Information &amp; Logo</h2>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label class="form-label" for="institutionName">
+                <span>University / College Name *</span>
+              </label>
+              <input type="text" id="institutionName" class="form-input" placeholder="e.g. Stanford University of Science &amp; Technology" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="institutionAddress">
+                <span>Institution Address / Campus</span>
+                <span class="optional-tag">Optional</span>
+              </label>
+              <input type="text" id="institutionAddress" class="form-input" placeholder="e.g. School of Engineering, Stanford, CA 94305" />
+            </div>
+
+            <!-- Logo Upload Area -->
+            <div class="form-group">
+              <label class="form-label">
+                <span>University Logo</span>
+                <span class="optional-tag">PNG, JPG, WEBP, SVG</span>
+              </label>
+
+              <!-- Upload Dropzone -->
+              <div class="logo-upload-zone" id="logoDropZone">
+                <input type="file" id="logoFileInput" class="logo-file-input" accept="image/png, image/jpeg, image/jpg, image/webp, image/svg+xml" />
+                <div class="logo-upload-content">
+                  <div class="upload-icon-circle">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                      <polyline points="17 8 12 3 7 8"></polyline>
+                      <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                  </div>
+                  <p class="upload-prompt">Drag &amp; drop university seal or <span>browse file</span></p>
+                  <p class="upload-hint">Aspect ratio is strictly preserved in PDF · Max file size: 5 MB</p>
+                </div>
+              </div>
+
+              <!-- Uploaded Logo Preview & Controls -->
+              <div class="logo-preview-card" id="logoPreviewCard">
+                <div class="logo-thumb-wrapper">
+                  <img id="logoThumbImg" class="logo-thumbnail-img" alt="University Logo Preview" />
+                  <div class="logo-meta">
+                    <span class="logo-meta-title" id="logoFileName">Logo Uploaded</span>
+                    <span class="logo-meta-size" id="logoFileSize">High Resolution</span>
+                  </div>
+                </div>
+                <div class="logo-actions">
+                  <button type="button" class="btn btn-secondary btn-sm" id="btnReplaceLogo" title="Replace logo file">
+                    Replace
+                  </button>
+                  <button type="button" class="btn btn-danger btn-sm" id="btnRemoveLogo" title="Remove logo from cover">
+                    Remove
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 2: Assignment Information -->
+        <section class="form-card" id="assignmentSection">
+          <div class="card-header">
+            <div class="card-title-group">
+              <div class="card-icon">2</div>
+              <h2 class="card-title">Assignment Information</h2>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label class="form-label" for="assignmentTitle">
+                <span>Assignment Title *</span>
+              </label>
+              <textarea id="assignmentTitle" class="form-textarea" rows="2" placeholder="e.g. Design and Empirical Analysis of Distributed Microservice Architecture" required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="assignmentTopic">
+                <span>Topic / Subtitle</span>
+                <span class="optional-tag">Optional</span>
+              </label>
+              <input type="text" id="assignmentTopic" class="form-input" placeholder="e.g. Fault-tolerant Consensus Protocols &amp; Scalability Benchmarks" />
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="courseName">
+                  <span>Course Name *</span>
+                </label>
+                <input type="text" id="courseName" class="form-input" placeholder="e.g. Advanced Distributed Software Systems" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="courseCode">
+                  <span>Course Code *</span>
+                </label>
+                <input type="text" id="courseCode" class="form-input" placeholder="e.g. CS-448B" required />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="assignmentNumber">
+                  <span>Assignment Number</span>
+                  <span class="optional-tag">Optional</span>
+                </label>
+                <input type="text" id="assignmentNumber" class="form-input" placeholder="e.g. Assignment #04 or Lab Report #02" />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="submissionDate">
+                  <span>Submission Date *</span>
+                </label>
+                <div class="input-with-button">
+                  <input type="text" id="submissionDate" class="form-input" placeholder="e.g. November 15, 2026" required />
+                  <button type="button" class="btn btn-secondary btn-sm" id="btnQuickToday" title="Set to today's date">
+                    Today
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 3: Student Information -->
+        <section class="form-card" id="studentSection">
+          <div class="card-header">
+            <div class="card-title-group">
+              <div class="card-icon">3</div>
+              <h2 class="card-title">Student Information (Submitted By)</h2>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="studentName">
+                  <span>Student Full Name *</span>
+                </label>
+                <input type="text" id="studentName" class="form-input" placeholder="e.g. Alexander J. Hayes" required />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="studentId">
+                  <span>Student ID / Roll Number *</span>
+                </label>
+                <input type="text" id="studentId" class="form-input" placeholder="e.g. ST-2023-8849" required />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="regNumber">
+                  <span>Registration Number</span>
+                  <span class="optional-tag">Optional</span>
+                </label>
+                <input type="text" id="regNumber" class="form-input" placeholder="e.g. REG-9912048" />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="department">
+                  <span>Department *</span>
+                </label>
+                <input type="text" id="department" class="form-input" placeholder="e.g. Department of Computer Science &amp; Engineering" required />
+              </div>
+            </div>
+
+            <div class="form-row-3">
+              <div class="form-group">
+                <label class="form-label" for="degree">
+                  <span>Degree / Program *</span>
+                </label>
+                <input type="text" id="degree" class="form-input" placeholder="e.g. B.Sc. in Computer Engineering" required />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="semester">
+                  <span>Semester / Year *</span>
+                </label>
+                <input type="text" id="semester" class="form-input" placeholder="e.g. 7th Semester / Senior Year" required />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="academicSession">
+                  <span>Academic Session *</span>
+                </label>
+                <input type="text" id="academicSession" class="form-input" placeholder="e.g. 2025 – 2026" required />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 4: Instructor Information -->
+        <section class="form-card" id="teacherSection">
+          <div class="card-header">
+            <div class="card-title-group">
+              <div class="card-icon">4</div>
+              <h2 class="card-title">Submitted To (Teacher Information)</h2>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="teacherName">
+                  <span>Teacher's Name *</span>
+                </label>
+                <input type="text" id="teacherName" class="form-input" placeholder="e.g. Dr. Marcus Vance, Ph.D." required />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="teacherDesignation">
+                  <span>Teacher's Designation *</span>
+                </label>
+                <input type="text" id="teacherDesignation" class="form-input" placeholder="e.g. Associate Professor &amp; Principal Investigator" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="teacherDepartment">
+                <span>Teacher's Department *</span>
+              </label>
+              <input type="text" id="teacherDepartment" class="form-input" placeholder="e.g. Department of Computer Science &amp; Engineering" required />
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 5: Design, Templates & Layout Options -->
+        <section class="form-card" id="styleSection">
+          <div class="card-header">
+            <div class="card-title-group">
+              <div class="card-icon">5</div>
+              <h2 class="card-title">Design, Templates &amp; Styles</h2>
+            </div>
+          </div>
+          <div class="card-body">
+            <!-- Template Grid -->
+            <div class="form-group">
+              <label class="form-label">
+                <span>Academic Layout Template</span>
+              </label>
+              <div class="template-grid">
+                <div class="template-card active" data-template="classic">
+                  <div class="template-mini-preview">
+                    <div class="tmpl-line tmpl-accent" style="width: 50%; margin: 0 auto;"></div>
+                    <div class="tmpl-line" style="width: 70%; margin: 0 auto;"></div>
+                    <div class="tmpl-line tmpl-accent" style="width: 40%; margin: 0 auto;"></div>
+                  </div>
+                  <span class="template-name">Classic Academic</span>
+                </div>
+
+                <div class="template-card" data-template="modern">
+                  <div class="template-mini-preview" style="border-left: 3px solid var(--color-accent); align-items: flex-start;">
+                    <div class="tmpl-line tmpl-accent" style="width: 60%;"></div>
+                    <div class="tmpl-line" style="width: 80%;"></div>
+                    <div class="tmpl-line" style="width: 50%;"></div>
+                  </div>
+                  <span class="template-name">Modern Minimal</span>
+                </div>
+
+                <div class="template-card" data-template="boxed">
+                  <div class="template-mini-preview" style="justify-content: space-around;">
+                    <div class="tmpl-line tmpl-accent" style="width: 60%; margin: 0 auto;"></div>
+                    <div style="display: flex; gap: 4px; width: 100%;">
+                      <div style="flex: 1; height: 16px; border: 1px solid #cbd5e1; border-radius: 2px;"></div>
+                      <div style="flex: 1; height: 16px; border: 1px solid #cbd5e1; border-radius: 2px;"></div>
+                    </div>
+                  </div>
+                  <span class="template-name">Boxed Grid</span>
+                </div>
+
+                <div class="template-card" data-template="executive">
+                  <div class="template-mini-preview" style="padding: 0;">
+                    <div style="height: 12px; background: var(--color-accent); width: 100%;"></div>
+                    <div style="padding: 4px; display: flex; flex-direction: column; gap: 4px;">
+                      <div class="tmpl-line" style="width: 65%; margin: 0 auto;"></div>
+                      <div class="tmpl-line" style="width: 45%; margin: 0 auto;"></div>
+                    </div>
+                  </div>
+                  <span class="template-name">Executive Bar</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <!-- Academic Accent Color -->
+              <div class="form-group">
+                <label class="form-label">
+                  <span>Institutional Accent Color</span>
+                </label>
+                <div class="color-swatch-group">
+                  <button type="button" class="color-swatch active" data-color="#1e3a8a" style="background-color: #1e3a8a;" title="Academic Navy"></button>
+                  <button type="button" class="color-swatch" data-color="#2563eb" style="background-color: #2563eb;" title="Classic Royal Blue"></button>
+                  <button type="button" class="color-swatch" data-color="#047857" style="background-color: #047857;" title="Forest Emerald"></button>
+                  <button type="button" class="color-swatch" data-color="#881337" style="background-color: #881337;" title="Wine Crimson"></button>
+                  <button type="button" class="color-swatch" data-color="#1e293b" style="background-color: #1e293b;" title="Charcoal Slate"></button>
+                </div>
+              </div>
+
+              <!-- Font Family -->
+              <div class="form-group">
+                <label class="form-label">
+                  <span>Typography Style</span>
+                </label>
+                <div class="segmented-control" id="fontSegments">
+                  <button type="button" class="segment-btn active" data-font="sans">Clean Sans</button>
+                  <button type="button" class="segment-btn" data-font="serif">Classic Serif</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <!-- Border Style -->
+              <div class="form-group">
+                <label class="form-label" for="borderStyleSelect">
+                  <span>Page Framing Border</span>
+                </label>
+                <select id="borderStyleSelect" class="form-select">
+                  <option value="double" selected>Double Academic Border</option>
+                  <option value="single">Single Hairline Border</option>
+                  <option value="none">No Border (Clean White)</option>
+                </select>
+              </div>
+
+              <!-- Watermark -->
+              <div class="form-group">
+                <label class="form-label" for="watermarkText">
+                  <span>Background Watermark</span>
+                  <span class="optional-tag">Optional</span>
+                </label>
+                <input type="text" id="watermarkText" class="form-input" placeholder="e.g. DRAFT or CONFIDENTIAL" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Final Submit Call to Action -->
+        <div style="display: flex; gap: 0.75rem; margin-top: 0.5rem;">
+          <button type="button" class="btn btn-primary btn-lg" id="btnDownloadPdf" style="flex: 1;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Download A4 PDF Now</span>
+          </button>
+
+          <button type="button" class="btn btn-secondary btn-lg" id="btnPrintCover" title="Direct browser print dialog">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 6 2 18 2 18 9"></polyline>
+              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+              <rect width="12" height="8" x="6" y="14"></rect>
+            </svg>
+            <span>Print</span>
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- RIGHT COLUMN: Live A4 Assignment Cover Page Preview -->
+    <div class="preview-column">
+      
+      <!-- Preview Header & Zoom Toolbar -->
+      <div class="preview-toolbar">
+        <div class="preview-meta-title">
+          <span>Live Cover Page Preview</span>
+          <span class="badge-a4">A4 Portrait · 210 × 297 mm</span>
+        </div>
+
+        <div class="zoom-controls">
+          <button type="button" class="zoom-btn" id="btnZoomOut" title="Zoom Out (-10%)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          </button>
+          <span class="zoom-level-text" id="zoomLevelDisplay">85%</span>
+          <button type="button" class="zoom-btn" id="btnZoomIn" title="Zoom In (+10%)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm" id="btnZoomFit" style="margin-left: 4px;">
+            Fit Screen
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm" id="btnZoomReset">
+            100%
+          </button>
+        </div>
+      </div>
+
+      <!-- Preview Viewport Canvas -->
+      <div class="preview-viewport" id="previewViewport">
+        <div class="paper-wrapper" id="paperWrapper">
+
+          <!-- The Real A4 Cover Page Canvas (Target for html2pdf.js & Printing) -->
+          <article class="a4-page template-classic border-style-double" id="cover-page-preview">
+            
+            <!-- Optional Watermark -->
+            <div class="page-watermark" id="previewWatermark" style="display: none;">DRAFT</div>
+
+            <!-- Page Framing Border Overlay -->
+            <div class="page-border-container"></div>
+
+            <!-- Executive Header Bar (Shown exclusively in Executive template) -->
+            <div class="executive-header-bar">
+              <div class="inst-name-white" id="previewExecInstName">Stanford University of Science &amp; Technology</div>
+              <div class="inst-addr-white" id="previewExecInstAddr">School of Engineering, Stanford, CA 94305</div>
+            </div>
+
+            <!-- 1. Institutional Top Section -->
+            <header class="cover-institution-header">
+              <div class="institution-logo-container" id="previewLogoContainer" style="display: none;">
+                <img id="previewLogo" class="institution-logo" alt="University Logo" />
+              </div>
+              <h1 class="institution-name" id="previewInstName">Stanford University of Science &amp; Technology</h1>
+              <div class="institution-address" id="previewInstAddr">School of Engineering, Stanford, CA 94305</div>
+              <div class="institution-divider"></div>
+            </header>
+
+            <!-- 2. Middle Assignment Title & Course Section -->
+            <section class="cover-assignment-body">
+              <div class="assignment-badge-tag" id="previewAssignNumber">Assignment #04</div>
+              <h2 class="assignment-main-title" id="previewAssignTitle">Design and Empirical Analysis of Distributed Microservice Architecture</h2>
+              <p class="assignment-topic" id="previewAssignTopic">Fault-tolerant Consensus Protocols, Scalability Benchmarks, and Latency Optimization in High-Throughput Cloud Networks</p>
+
+              <div class="course-info-box">
+                <div class="course-name-display" id="previewCourseName">Advanced Distributed Software Systems</div>
+                <div class="course-code-display" id="previewCourseCode">Course Code: CS-448B</div>
+              </div>
+            </section>
+
+            <!-- 3. Lower Details Section (Submitted By & Submitted To) -->
+            <section class="cover-details-section">
+              <!-- Left Column: Student Details -->
+              <div class="detail-block">
+                <div class="detail-header-tag">Submitted By</div>
+                <div class="detail-person-name" id="previewStudentName">Alexander J. Hayes</div>
+                <div class="detail-rows">
+                  <div class="detail-row">
+                    <span class="detail-label">Student ID:</span>
+                    <span class="detail-value" id="previewStudentId">ST-2023-8849</span>
+                  </div>
+                  <div class="detail-row" id="previewRegRow">
+                    <span class="detail-label">Reg. No:</span>
+                    <span class="detail-value" id="previewRegNumber">REG-9912048</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">Program:</span>
+                    <span class="detail-value" id="previewDegree">Bachelor of Science (B.Sc.) in Computer Engineering</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">Dept:</span>
+                    <span class="detail-value" id="previewStudentDept">Department of Computer Science &amp; Engineering</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">Semester:</span>
+                    <span class="detail-value" id="previewSemester">7th Semester / Senior Year</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Column: Teacher Details -->
+              <div class="detail-block">
+                <div class="detail-header-tag">Submitted To</div>
+                <div class="detail-person-name" id="previewTeacherName">Dr. Marcus Vance, Ph.D.</div>
+                <div class="detail-rows">
+                  <div class="detail-row">
+                    <span class="detail-label">Designation:</span>
+                    <span class="detail-value" id="previewTeacherDesignation">Associate Professor &amp; Principal Investigator</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">Dept:</span>
+                    <span class="detail-value" id="previewTeacherDept">Department of Computer Science &amp; Engineering</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">Faculty:</span>
+                    <span class="detail-value">Faculty of Electrical &amp; Computer Engineering</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- 4. Bottom Footer (Date & Session) -->
+            <footer class="cover-footer">
+              <div class="footer-item">
+                <span>Academic Session:</span>
+                <strong id="previewSession">2025 – 2026</strong>
+              </div>
+              <div class="footer-item">
+                <span>Date of Submission:</span>
+                <strong id="previewSubmitDate">November 15, 2026</strong>
+              </div>
+            </footer>
+
+          </article>
+
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ======================================================================
+       Website Footer
+       ====================================================================== -->
+  <footer class="app-footer">
+    <div class="footer-content">
+      <div>
+        <strong>CoverCraft</strong> – Professional Academic Cover Page Generator. 100% Client-Side. No login required.
+      </div>
+      <div class="footer-links">
+        <a href="#coverCraftForm">Back to Top</a>
+        <span>·</span>
+        <a href="#" id="footerSampleBtn" onclick="document.getElementById('btnLoadSample').click(); return false;">Load Sample</a>
+        <span>·</span>
+        <span>A4 Format (210mm × 297mm)</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======================================================================
+       Toast Notifications Container
+       ====================================================================== -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- ======================================================================
+       PDF Generation Progress Spinner Overlay
+       ====================================================================== -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <div class="loading-text">Generating High-Resolution A4 PDF...</div>
+    <div class="loading-subtext">Rendering academic typography and university seal. Please wait a moment.</div>
+  </div>
+
+  <!-- ======================================================================
+       Reset Confirmation Modal
+       ====================================================================== -->
+  <div class="modal-backdrop" id="resetModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-icon-danger">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 6h18"></path>
+            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+            <line x1="10" y1="11" x2="10" y2="17"></line>
+            <line x1="14" y1="11" x2="14" y2="17"></line>
+          </svg>
+        </div>
+        <div>
+          <h3 class="modal-title">Reset Form Fields?</h3>
+          <p class="modal-desc">This will erase all entered student and assignment information, remove the uploaded university logo, and clear your browser cache.</p>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" id="btnCancelReset">Cancel</button>
+        <button type="button" class="btn btn-danger" id="btnConfirmReset">Yes, Reset Everything</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Application Script -->
+  <script src="js/script.js"></script>
+</body>
+</html>

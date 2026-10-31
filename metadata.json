@@ -1,0 +1,6 @@
+{
+  "name": "CoverCraft – Assignment Cover Page Generator",
+  "description": "A modern, clean, and responsive academic cover page generator. Enter your details, upload your university logo, customize templates, and download a print-ready A4 PDF.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
